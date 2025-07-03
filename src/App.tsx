@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -65,20 +66,18 @@ const App = () => (
             </Route>
 
             {/* Protected Admin Dashboard Routes */}
-            <Route path="/admin/dashboard" element={
+            <Route path="/admin" element={
               <ProtectedRoute adminOnly>
                 <AdminDashboardLayout />
               </ProtectedRoute>
             }>
-              <Route index element={<AdminDashboard />} />
+              <Route index element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="users" element={<AdminUsers />} />
               <Route path="websites" element={<AdminWebsites />} />
               <Route path="analytics" element={<AdminAnalytics />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
-
-            {/* Redirect /admin to /admin/login */}
-            <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
             
             {/* 404 Route */}
             <Route path="*" element={<NotFound />} />
