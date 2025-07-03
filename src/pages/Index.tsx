@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -119,14 +118,16 @@ const Index = () => {
             <div className="hidden md:flex items-center space-x-6">
               <a href="#features" className="text-gray-600 hover:text-primary transition-colors">Features</a>
               <a href="#pricing" className="text-gray-600 hover:text-primary transition-colors">Pricing</a>
-              <a href="#about" className="text-gray-600 hover:text-primary transition-colors">About</a>
+              <Link to="/help" className="text-gray-600 hover:text-primary transition-colors">Help</Link>
               <a href="#contact" className="text-gray-600 hover:text-primary transition-colors">Contact</a>
             </div>
 
             <div className="flex items-center space-x-4">
               <Search className="h-5 w-5 text-gray-500" />
-              <Button variant="ghost">Login</Button>
-              <Link to="/dashboard">
+              <Link to="/login">
+                <Button variant="ghost">Login</Button>
+              </Link>
+              <Link to="/signup">
                 <Button className="bg-primary hover:bg-purple-700">Get Started</Button>
               </Link>
             </div>
@@ -147,15 +148,17 @@ const Index = () => {
               to make accurate predictions and drive better business decisions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <Link to="/dashboard">
+              <Link to="/signup">
                 <Button size="lg" className="bg-primary hover:bg-purple-700 px-8 py-3 text-lg">
                   Get Started Free
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" className="px-8 py-3 text-lg">
-                Watch Demo
-              </Button>
+              <Link to="/help">
+                <Button size="lg" variant="outline" className="px-8 py-3 text-lg">
+                  Learn More
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -228,13 +231,15 @@ const Index = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button 
-                    className={`w-full ${
-                      plan.popular ? 'bg-primary hover:bg-purple-700' : 'bg-gray-900 hover:bg-gray-800'
-                    }`}
-                  >
-                    Get Started
-                  </Button>
+                  <Link to="/signup">
+                    <Button 
+                      className={`w-full ${
+                        plan.popular ? 'bg-primary hover:bg-purple-700' : 'bg-gray-900 hover:bg-gray-800'
+                      }`}
+                    >
+                      Get Started
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
@@ -292,9 +297,11 @@ const Index = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-white"
               />
-              <Button className="bg-white text-primary hover:bg-gray-100">
-                Get Started
-              </Button>
+              <Link to="/signup">
+                <Button className="bg-white text-primary hover:bg-gray-100">
+                  Get Started
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -319,8 +326,8 @@ const Index = () => {
             <div>
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">API</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Extensions</a></li>
               </ul>
@@ -329,17 +336,17 @@ const Index = () => {
             <div>
               <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                <li><Link to="/help" className="hover:text-white transition-colors">Help</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><Link to="/help" className="hover:text-white transition-colors">Help Center</Link></li>
                 <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
