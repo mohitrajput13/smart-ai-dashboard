@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Globe } from 'lucide-react';
+import { Plus, Edit, Trash2, Globe, Eye, MoreVertical } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Website {
@@ -15,6 +15,7 @@ interface Website {
   cssClass: string;
   status: 'active' | 'inactive';
   addedDate: string;
+  lastChecked: string;
   predictions: number;
 }
 
@@ -26,7 +27,8 @@ const AdminWebsites = () => {
       cssClass: '.prediction-button',
       status: 'active',
       addedDate: '2024-01-15',
-      predictions: 234
+      lastChecked: '2024-01-20',
+      predictions: 1247
     },
     {
       id: '2',
@@ -34,15 +36,26 @@ const AdminWebsites = () => {
       cssClass: '.predict-btn',
       status: 'inactive',
       addedDate: '2024-01-10',
-      predictions: 45
+      lastChecked: '2024-01-18',
+      predictions: 89
     },
     {
       id: '3',
-      url: 'https://test-site.com',
-      cssClass: '.ai-predict',
+      url: 'https://marketplace.io',
+      cssClass: '.ai-predictor',
       status: 'active',
-      addedDate: '2024-01-20',
-      predictions: 567
+      addedDate: '2024-01-12',
+      lastChecked: '2024-01-20',
+      predictions: 2156
+    },
+    {
+      id: '4',
+      url: 'https://trading.com',
+      cssClass: '.market-predict',
+      status: 'active',
+      addedDate: '2024-01-08',
+      lastChecked: '2024-01-19',
+      predictions: 3421
     }
   ]);
 
@@ -67,6 +80,7 @@ const AdminWebsites = () => {
       cssClass: newWebsite.cssClass,
       status: 'active',
       addedDate: new Date().toISOString().split('T')[0],
+      lastChecked: new Date().toISOString().split('T')[0],
       predictions: 0
     };
 
@@ -84,7 +98,7 @@ const AdminWebsites = () => {
   const toggleWebsiteStatus = (id: string) => {
     setWebsites(websites.map(w => 
       w.id === id 
-        ? { ...w, status: w.status === 'active' ? 'inactive' as const : 'active' as const }
+        ? { ...w, status: w.status === 'active' ? 'inactive' : 'active' }
         : w
     ));
     toast.success('Website status updated!');
@@ -97,9 +111,10 @@ const AdminWebsites = () => {
           <h2 className="text-2xl font-bold text-gray-900">Website Management</h2>
           <p className="text-gray-600">Manage websites where the AI Predictor extension works</p>
         </div>
+        
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="bg-primary hover:bg-purple-700">
               <Plus className="mr-2 h-4 w-4" />
               Add Website
             </Button>
@@ -140,85 +155,135 @@ const AdminWebsites = () => {
                 <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
                   Cancel
                 </Button>
-                <Button type="submit">Add Website</Button>
+                <Button type="submit" className="bg-primary hover:bg-purple-700">Add Website</Button>
               </div>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {websites.map((website) => (
-          <Card key={website.id} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <Globe className="h-8 w-8 text-primary" />
-                <div className="flex space-x-2">
-                  <Badge variant={website.status === 'active' ? 'default' : 'secondary'}>
-                    {website.status}
-                  </Badge>
-                </div>
-              </div>
-              <CardTitle className="text-lg truncate" title={website.url}>
-                {website.url}
-              </CardTitle>
-              <CardDescription>
-                CSS Class: {website.cssClass}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Added:</span>
-                  <span>{website.addedDate}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Predictions:</span>
-                  <span className="font-semibold">{website.predictions}</span>
-                </div>
-                <div className="flex justify-between space-x-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => toggleWebsiteStatus(website.id)}
-                  >
-                    {website.status === 'active' ? 'Deactivate' : 'Activate'}
-                  </Button>
-                  <div className="flex space-x-1">
-                    <Button variant="ghost" size="sm" title="Edit Website">
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={() => handleDeleteWebsite(website.id)}
-                      title="Delete Website"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {websites.length === 0 && (
-        <Card className="text-center py-12">
+      {/* Website Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Websites</CardTitle>
+            <Globe className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
           <CardContent>
-            <Globe className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No websites added yet</h3>
-            <p className="text-gray-600 mb-4">
-              Start by adding your first website where the AI Predictor extension will work
+            <div className="text-2xl font-bold">{websites.length}</div>
+            <p className="text-xs text-muted-foreground">
+              {websites.filter(w => w.status === 'active').length} active
             </p>
-            <Button onClick={() => setIsModalOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Your First Website
-            </Button>
           </CardContent>
         </Card>
-      )}
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Sites</CardTitle>
+            <Globe className="h-4 w-4 text-green-600" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">
+              {websites.filter(w => w.status === 'active').length}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Currently operational
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Predictions</CardTitle>
+            <Badge variant="outline">AI</Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {websites.reduce((sum, w) => sum + w.predictions, 0).toLocaleString()}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Across all websites
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Avg Predictions</CardTitle>
+            <Badge variant="secondary">Per Site</Badge>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {Math.round(websites.reduce((sum, w) => sum + w.predictions, 0) / websites.length).toLocaleString()}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Per website
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Websites List */}
+      <Card>
+        <CardHeader>
+          <CardTitle>All Websites ({websites.length})</CardTitle>
+          <CardDescription>Manage and monitor all integrated websites</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {websites.map((website) => (
+              <div key={website.id} className="flex items-center justify-between border-b pb-4 last:border-b-0">
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center space-x-3">
+                    <Globe className="h-5 w-5 text-gray-400" />
+                    <h3 className="font-semibold text-lg">{website.url}</h3>
+                    <Badge variant={website.status === 'active' ? 'default' : 'secondary'}>
+                      {website.status}
+                    </Badge>
+                  </div>
+                  <p className="text-gray-600 ml-8">CSS Class: <code className="bg-gray-100 px-2 py-1 rounded">{website.cssClass}</code></p>
+                  <div className="flex items-center space-x-4 text-sm text-gray-500 ml-8">
+                    <span>Added: {website.addedDate}</span>
+                    <span>•</span>
+                    <span>Last checked: {website.lastChecked}</span>
+                    <span>•</span>
+                    <span>{website.predictions.toLocaleString()} predictions</span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Button variant="ghost" size="sm" title="View Details">
+                    <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    title="Toggle Status"
+                    onClick={() => toggleWebsiteStatus(website.id)}
+                  >
+                    <Badge variant={website.status === 'active' ? 'default' : 'secondary'}>
+                      {website.status}
+                    </Badge>
+                  </Button>
+                  <Button variant="ghost" size="sm" title="Edit Website">
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    title="Delete Website"
+                    onClick={() => handleDeleteWebsite(website.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" title="More Options">
+                    <MoreVertical className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

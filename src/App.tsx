@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,6 +11,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Help from "./pages/Help";
+import Contact from "./pages/Contact";
 
 // User Dashboard
 import { UserDashboardLayout } from "./components/UserDashboardLayout";
@@ -46,6 +46,7 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/help" element={<Help />} />
+            <Route path="/contact" element={<Contact />} />
             
             {/* Admin Login */}
             <Route path="/admin/login" element={<Login />} />
