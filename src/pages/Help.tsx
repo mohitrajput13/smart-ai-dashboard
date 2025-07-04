@@ -262,6 +262,56 @@ const Help = () => {
           </Card>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <Target className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-xl font-bold">AI Predictor</span>
+              </div>
+              <p className="text-gray-400">
+                Making prediction markets accessible to everyone with the power of AI.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Product</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link to="/" className="hover:text-white">Features</Link></li>
+                <li><Link to="/" className="hover:text-white">Pricing</Link></li>
+                <li><Link to="/help" className="hover:text-white">Help</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Company</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
+                <li><Link to="/" className="hover:text-white">Privacy</Link></li>
+                <li><Link to="/" className="hover:text-white">Terms</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-4">Support</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link to="/help" className="hover:text-white">Documentation</Link></li>
+                <li><Link to="/contact" className="hover:text-white">Contact Us</Link></li>
+                <li><Link to="/" className="hover:text-white">Status</Link></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 AI Predictor. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
