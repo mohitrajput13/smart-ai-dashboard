@@ -1,12 +1,13 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Target, Download, Chrome, Settings, Play, CheckCircle, ArrowRight } from 'lucide-react';
+import { Target, Download, Chrome, Settings, Play, CheckCircle, ArrowRight, Menu, X } from 'lucide-react';
 
 const Help = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   const steps = [
     {
       number: 1,
@@ -58,7 +59,14 @@ const Help = () => {
               <span className="text-xl font-bold text-gray-900">AI Predictor</span>
             </Link>
             
-            <div className="flex items-center space-x-4">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-8">
+              <Link to="/" className="text-gray-600 hover:text-gray-900">Home</Link>
+              <Link to="/help" className="text-gray-600 hover:text-gray-900">Help</Link>
+              <Link to="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
+            </nav>
+            
+            <div className="hidden md:flex items-center space-x-4">
               <Link to="/login">
                 <Button variant="ghost">Login</Button>
               </Link>
@@ -66,7 +74,36 @@ const Help = () => {
                 <Button className="bg-primary hover:bg-purple-700">Get Started</Button>
               </Link>
             </div>
+
+            {/* Mobile menu button */}
+            <Button
+              variant="ghost" 
+              size="sm"
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t">
+              <nav className="flex flex-col space-y-2 mt-4">
+                <Link to="/" className="text-gray-600 hover:text-gray-900 py-2">Home</Link>
+                <Link to="/help" className="text-gray-600 hover:text-gray-900 py-2">Help</Link>
+                <Link to="/contact" className="text-gray-600 hover:text-gray-900 py-2">Contact</Link>
+                <div className="flex flex-col space-y-2 pt-2">
+                  <Link to="/login">
+                    <Button variant="ghost" className="w-full justify-start">Login</Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button className="bg-primary hover:bg-purple-700 w-full">Get Started</Button>
+                  </Link>
+                </div>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
