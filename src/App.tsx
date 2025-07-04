@@ -48,9 +48,6 @@ const App = () => (
             <Route path="/signup" element={<Signup />} />
             <Route path="/help" element={<Help />} />
             <Route path="/contact" element={<Contact />} />
-            
-            {/* Admin Login */}
-            <Route path="/admin/login" element={<Login />} />
 
             {/* Protected User Dashboard Routes */}
             <Route path="/dashboard" element={
@@ -65,18 +62,24 @@ const App = () => (
               <Route path="settings" element={<Settings />} />
             </Route>
 
-            {/* Protected Admin Dashboard Routes */}
-            <Route path="/admin" element={
-              <ProtectedRoute adminOnly>
-                <AdminDashboardLayout />
-              </ProtectedRoute>
-            }>
-              <Route index element={<Navigate to="/admin/dashboard" replace />} />
-              <Route path="dashboard" element={<AdminDashboard />} />
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="websites" element={<AdminWebsites />} />
-              <Route path="analytics" element={<AdminAnalytics />} />
-              <Route path="settings" element={<AdminSettings />} />
+            {/* Admin Routes */}
+            <Route path="/admin">
+              {/* Admin Login - Public */}
+              <Route path="login" element={<Login />} />
+              
+              {/* Protected Admin Routes */}
+              <Route path="" element={
+                <ProtectedRoute adminOnly>
+                  <AdminDashboardLayout />
+                </ProtectedRoute>
+              }>
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="dashboard" element={<AdminDashboard />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="websites" element={<AdminWebsites />} />
+                <Route path="analytics" element={<AdminAnalytics />} />
+                <Route path="settings" element={<AdminSettings />} />
+              </Route>
             </Route>
             
             {/* 404 Route */}
